@@ -1,8 +1,9 @@
 <?php
 
 namespace {{ namespace }};
+use LaravelRepository\Contracts\BaseRepositoryContract;
 
-interface {{ contract }}
+interface {{ contract }} extends BaseRepositoryContract
 {
 
 }

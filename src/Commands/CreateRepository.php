@@ -49,7 +49,7 @@ class CreateRepository extends GeneratorCommand
         $stub = str_replace('{{ contractNamespace }}', $contractNamespace, $stub);
         
         // handle Registration of namespaces
-        $this->handleRegistration($namespace.'\\'.$className,'App\Models\\'.$model);
+        $this->handleRegistration($namespace.'\\'.$className,$contractNamespace,'App\Models\\'.$model);
         
         if($userInputPath){
             $this->contract = $userInputPath.'\\'.$this->contract;
@@ -114,7 +114,7 @@ class CreateRepository extends GeneratorCommand
         $this->components->info($info.' created successfully.');
     }
 
-    private function handleRegistration($repositoryNamespace,$model){
+    private function handleRegistration($repositoryNamespace,$contract,$model){
         try {
             
             $repositories = config('repository.repositories');
@@ -131,15 +131,29 @@ class CreateRepository extends GeneratorCommand
             $configStub = $this->files->get(__DIR__.'/../stubs/config.stub');
             $configContent = '';
             // new repository;
-            $repositories[$repositoryNamespace] = \Str::studly($model); 
+            $repositories[$repositoryNamespace] = [
+                'model' => \Str::studly($model),
+                'contract' => $contract,
+            ]; 
             // looping over all repositories to manage previously added and newly added repositories in list;
-            foreach($repositories as $repository => $model){
-                $configContent .= "  $repository::class => $model::class,".PHP_EOL;
-            }
+            $this->generateContent($repositories,$configContent);
             $configStub = str_replace('{{ configArray }}',$configContent, $configStub);
             $this->files->put($configPath,$configStub);
         } catch (\Exception $e) {
             throw new Exception($e->getMessage());
+        }
+    }
+    
+    private function generateContent($repositories,&$content){
+        foreach($repositories as $key => $value){
+            if(is_array($value)){
+                
+                $content .= "$key::class => [".PHP_EOL;
+                $this->generateContent($value,$content);
+                $content .= '        ]'.PHP_EOL;
+            }else{
+                $content .= sprintf("               '%s' => %s::class,",$key,$value).PHP_EOL;
+            }
         }
     }
 }

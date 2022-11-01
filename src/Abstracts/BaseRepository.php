@@ -12,12 +12,20 @@ abstract class BaseRepository
     protected $model;
     protected $countRelations = [];
     
+    public function __construct()
+    {
+        $repositories = config('repository.repositories')??[];
+        $current = get_class($this);
+        $this->model = resolve($repositories[$current]['model']);
+    }
+
     public final function setModel(Model $model)
     {
 
         $this->model = $model;
         return $this;
     }
+    
     public final function withCount($relations = [])
     {
         $this->countRelations = $relations;
@@ -105,5 +113,5 @@ abstract class BaseRepository
     public final function notification()
     {
         return (new NotificationRepository())->setModel(new Notification());
-    }  
+    }
 }

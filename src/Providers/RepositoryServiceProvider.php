@@ -24,10 +24,20 @@ class RepositoryServiceProvider extends ServiceProvider {
             ]);
         }
 
+        $this->bindRepositories();
+
         $this->publishes([
             __DIR__.'/../config' => config_path(),
         ], 'repository-config');
         
+    }
+
+    private function bindRepositories(){
+        $repositories = config('repository.repositories')??[];
+
+        foreach($repositories as $repo => $repository){
+            $this->app->bind($repository['contract']??null,$repo);
+        }
     }
 
 }
