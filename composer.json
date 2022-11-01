@@ -1,7 +1,7 @@
 {
     "name": "safiullahsarhandi/laravel-repository",
     "description": "This Package is used to implement repository pattern in laravel with very minimal code",
-    "license": "GNU",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Safeeullah Sarhandi",
