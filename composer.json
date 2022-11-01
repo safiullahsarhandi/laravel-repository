@@ -1,0 +1,17 @@
+{
+    "name": "safiullahsarhandi/laravel-repository",
+    "description": "This Package is used to implement repository pattern in laravel with very minimal code",
+    "license": "\u001b[5~",
+    "authors": [
+        {
+            "name": "Safeeullah Sarhandi",
+            "email": "sarhandi4@hotmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "LaravelRepository\\": "src/"
+        }
+    },
+    "require": {}
+}

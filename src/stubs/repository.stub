@@ -1,0 +1,11 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ contractNamespace }};
+use LaravelRepository\Abstracts\BaseRepository;
+
+class {{ class }} extends BaseRepository implements {{ contract }}
+{
+    
+}
