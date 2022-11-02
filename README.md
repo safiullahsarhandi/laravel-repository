@@ -43,4 +43,9 @@ This package offers few commands which helps to perform different tasks or you c
       command: `php artisan make:filter <path/to/filter>`
       
       eg: `php artisan make:filter Api/User/UserFilter` this will generate filter in app/Filters/Api/User/UserFilters.php
+      
+ 3. Create Repository Events
+
+      you can't override the predefined functions which repository offers, but sometimes or you can say most of the time you need to filter or performing any specific operation on particular time while execution. Using direct repository functions cannot acheive it because they are just interacting with data but do not implement your business logic. To acheive this you can bind `repository event` with it. you can assume that events are similar to laravel observers. whereas observers are just triggered for model but here repository event could be available for repository only   
+      
 
