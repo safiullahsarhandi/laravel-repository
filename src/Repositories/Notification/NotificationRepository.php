@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\Notification;
+namespace LaravelRepository\Repositories\Notification;
 
-use App\Core\Abstracts\Filters;
-use App\Core\Abstracts\Repository\BaseRepository;
+use LaravelRepository\Abstracts\Filters;
+use LaravelRepository\Abstracts\BaseRepository;
 use App\Core\Notifications\PushNotification;
-use App\Repositories\Notification\NotificationRepositoryContract;
+use LaravelRepository\Repositories\Notification\NotificationRepositoryContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Notification;

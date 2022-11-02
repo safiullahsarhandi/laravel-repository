@@ -2,6 +2,7 @@
 namespace LaravelRepository\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use LaravelRepository\Commands\CreateEvent;
 use LaravelRepository\Commands\CreateRepository;
 use LaravelRepository\Commands\CreateRepositoryContract;
 use LaravelRepository\Commands\GenerateFilters;
@@ -21,6 +22,7 @@ class RepositoryServiceProvider extends ServiceProvider {
                 CreateRepository::class,
                 CreateRepositoryContract::class,
                 GenerateFilters::class,
+                CreateEvent::class,
             ]);
         }
 

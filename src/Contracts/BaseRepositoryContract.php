@@ -2,21 +2,24 @@
 namespace LaravelRepository\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
+use LaravelRepository\Abstracts\BaseRepository;
 use LaravelRepository\Abstracts\Filters;
 
 interface BaseRepositoryContract{
 
     public function setModel(Model $model);
     
-    public function withCount($relations = []);
+    public function withCount(array $relations = []);
     
-    public function findAll(Filters|null $filter = null, array $relations = []);
+    public function with(array $relations = []);
 
-    public function findById(int $id, array $relations = [], Filters|null $filter = null);
+    public function findAll(Filters|null $filter = null);
+
+    public function findById(int $id, Filters|null $filter = null);
     
-    public function findOne(array $relations = [], Filters|null $filter = null);
+    public function findOne(Filters|null $filter = null);
 
-    public function paginate(int $perPage = 10, array $relations = [], Filters|null $filter = null);
+    public function paginate(int $perPage = 10, Filters|null $filter = null);
 
     public function create(array $params);
 
@@ -31,5 +34,8 @@ interface BaseRepositoryContract{
     *
     */
     public function notification();
+
+    public function event(string $eventNamespace): BaseRepository;
 }
+
 ?>

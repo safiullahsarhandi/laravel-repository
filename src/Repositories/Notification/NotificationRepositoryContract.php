@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Notification;
+namespace LaravelRepository\Repositories\Notification;
 
 use App\Core\Abstracts\Filters;
 use Illuminate\Database\Eloquent\Model;

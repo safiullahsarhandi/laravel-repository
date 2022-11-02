@@ -1,0 +1,49 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Model;
+use LaravelRepository\Contracts\EventContract;
+
+class {{ class }} implements EventContract {
+    
+    
+    public function beforeCreate($repository,array $params = [])
+    {
+        
+    }
+    
+
+    public function created(Model $model)
+    {
+
+    }
+
+    public function beforeUpdate($repository,array $params = [])
+    {     
+    }
+
+    public function updated(Model $model)
+    {
+
+    }
+
+    public function beforeDelete($repository,mixed $param)
+    {
+    }
+
+    public function deleted(mixed $param)
+    {
+
+    }
+
+    public function beforeFetch($repository,mixed $params = null)
+    {
+
+    }
+
+    public function fetched(null|Model $value = null)
+    {
+
+    }
+}

@@ -1,6 +1,9 @@
 <?php 
 return [
-    
+    /* 
+    * repositories will contain all the repositories namespaces from app/Repositories directory  and bind Contract and model for it  
+    * this allows you not to set model explicitly on every use.
+    */
     'repositories' => [
         {{ configArray }}
     ],
