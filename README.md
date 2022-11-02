@@ -30,7 +30,17 @@ return [
 
 This package offers few commands which helps to perform different tasks or you can say that it's required to use this. 
 
-1. 
-`php artisan make:repository <path/to/repository> <model>`
+1. Create Repository
 
-eg: `php artisan make:repository User/UserRepository User` this will create repository in app/Repositories/User/UserRepository
+      command: `php artisan make:repository <path/to/repository> <model>`
+      
+      eg: `php artisan make:repository User/UserRepository User` this will create repository in app/Repositories/User/UserRepository.php
+      
+2. Create Query Filter
+
+      idea behind filter is to extend database query. When calling any specific repository, every repository function which you will see below has some how similar structure and contain minimum amount of code. i will explain implementation for filters in next section of documentation so that you will get familier with it but for now you can generate your filter with given command.
+      
+      command: `php artisan make:filter <path/to/filter>`
+      
+      eg: `php artisan make:filter Api/User/UserFilter` this will generate filter in app/Filters/Api/User/UserFilters.php
+
