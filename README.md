@@ -21,13 +21,7 @@ return [
       * repositories will contain all the repositories namespaces from app/Repositories directory  and bind Contract and model for it  
       * this allows you not to set model explicitly on every use.  
       */
-      'repositories' => [ 
-          App\Repositories\User\UserRepository::class => [
-                 'model' => App\Models\User::class,  //model associated with UserRepository by default
-                 'contract' => App\Repositories\User\UserRepositoryContract::class, //contract bind with UserRepository
-          ]
-
-      ],
+      'repositories' => [],
   ];
 ?> 
 ```
