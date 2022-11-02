@@ -10,10 +10,31 @@ using below mentioned command you can add this package in your laravel project
 
 # publish assets
 1. `php artisan vendor:publish --tag=repository-config`
+this command will create `repository.php` configuration file in `config` directory with following snippet in it. 
+
+
+``` 
+<?php 
+//config/repository.php
+return [
+      /* 
+      * repositories will contain all the repositories namespaces from app/Repositories directory  and bind Contract and model for it  
+      * this allows you not to set model explicitly on every use.  
+      */
+      'repositories' => [ 
+          App\Repositories\User\UserRepository::class => [
+                 'model' => App\Models\User::class,  //model associated with UserRepository by default
+                 'contract' => App\Repositories\User\UserRepositoryContract::class, //contract bind with UserRepository
+          ]
+
+      ],
+  ];
+?> 
+```
 
 # Commands
 
-This package offers few commands to finish headache for creating core features 
+This package offers few commands which helps to perform different tasks or you can say that it's required to use this. 
 
 1. 
 `php artisan make:repository <path/to/repository> <model>`
