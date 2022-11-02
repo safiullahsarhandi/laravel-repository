@@ -48,4 +48,8 @@ This package offers few commands which helps to perform different tasks or you c
 
       you can't override the predefined functions which repository offers, but sometimes or you can say most of the time you need to filter or performing any specific operation on particular time while execution. Using direct repository functions cannot acheive it because they are just interacting with data but do not implement your business logic. To acheive this you can bind `repository event` with it. you can assume that events are similar to laravel observers. whereas observers are just triggered for model but here repository event could be available for repository only   
       
+      command: `php artisan make:repository <path/to/repository-event>`
+      
+      eg: `php artisan make:repository-event User/UserRepositoryEvent` this will create event class in app/Events/User/UserRepositoryEvent.php
+      
 
