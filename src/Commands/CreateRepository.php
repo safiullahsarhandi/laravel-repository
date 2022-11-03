@@ -148,11 +148,11 @@ class CreateRepository extends GeneratorCommand
         foreach($repositories as $key => $value){
             if(is_array($value)){
                 
-                $content .= "$key::class => [".PHP_EOL;
+                $content .= "            $key::class => [".PHP_EOL;
                 $this->generateContent($value,$content);
-                $content .= '        ]'.PHP_EOL;
+                $content .= '            ],'.PHP_EOL;
             }else{
-                $content .= sprintf("               '%s' => %s::class,",$key,$value).PHP_EOL;
+                $content .= sprintf("                '%s' => %s::class,",$key,$value).PHP_EOL;
             }
         }
     }

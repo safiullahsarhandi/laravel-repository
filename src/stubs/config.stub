@@ -5,7 +5,7 @@ return [
     * this allows you not to set model explicitly on every use.
     */
     'repositories' => [
-        {{ configArray }}
+            {{ configArray }}
     ],
 ];
 ?>
