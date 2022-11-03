@@ -88,6 +88,27 @@ This package offers few commands which helps to perform different tasks or you c
           }
       }
       ```
+      ### Make Model Filterable
+      before going through that how to use `UserFilter::class` with any repository, we should know that what basic steps to be followed before binding filter with repository. we have to use `LaravelRepository\Traits\Filterable` in model to make any model filtered on demand.
+      
+      ```
+      <?php
+
+      namespace App\Models;
+
+      use Illuminate\Database\Eloquent\Factories\HasFactory;
+      use Illuminate\Database\Eloquent\Model;
+      use LaravelRepository\Traits\Filterable;
+
+      class User extends Model
+      {
+          use HasFactory, Filterable;
+
+          protected $fillable = ['name','email','password'];
+      }
+
+      ```
+      ### How to use Query Filter
       
       filter class should have methods with same name which you haved registered in `protected $filters` property. whenever you bind query filter with repository it reads laravel `Illuminate\Support\Request` instance and verify the availablity of parameters in http request. you can use it this way
       
@@ -106,6 +127,8 @@ This package offers few commands which helps to perform different tasks or you c
       });
 
       ```
+      ### Extend Query Filter
+      
       sometimes you want to extend filters under the hood, and don't want to expose every parameter when any specific `route` called. you can extend filter programitically unless filter is passed to repository. 
       
       ```
@@ -149,8 +172,10 @@ This package offers few commands which helps to perform different tasks or you c
 
       you can't override the predefined functions which repository offers, but sometimes or you can say most of the time you need to filter or performing any specific operation on particular time while execution. Using direct repository functions cannot acheive it because they are just interacting with data but do not implement your business logic. To acheive this you can bind `repository event` with it. you can assume that events are similar to laravel observers. whereas observers are just triggered for model but here repository event could be available for repository only   
       
-      command: `php artisan make:repository <path/to/repository-event>`
+      command: `php artisan make:repository-event <path/to/repository-event>`
       
-      eg: `php artisan make:repository-event User/UserRepositoryEvent` this will create event class in app/Events/User/UserRepositoryEvent.php
+      eg: `php artisan make:repository-event User/UserRepositoryEvent` this will create event class in `app/Events/User/UserRepositoryEvent.php`
+      
+     
       
 
