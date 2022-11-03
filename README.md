@@ -101,12 +101,47 @@ This package offers few commands which helps to perform different tasks or you c
       
       Route::get('/users', function (UserRepositoryContract $user,UserFilter $filter) {
           $data = $user->findAll($filter);
-          // under the hood its work like this
+          // under the hood it work like this
          // User::where(status,'active')->get();
       });
 
       ```
+      sometimes you want to extend filters under the hood, and don't want to expose every parameter when any specific `route` called. you can extend filter programitically unless filter is passed to repository. 
       
+      ```
+      Route::get('/account', function (UserRepositoryContract $user,UserFilter $filter) {
+          // extends request after it has been initialized
+          $filter->extendRequest([
+              'user_id' => auth()->id(),
+          ]);
+          $data = $user->findOne($filter);
+          // under the hood it work like this
+          // User::where('user_id',1)->first();
+      });
+      
+      ```
+      and your `UserFilter` should be like this  
+      ```
+      <?php
+      
+      namespace App\Filters\Api;
+      use LaravelRepository\Abstracts\Filters;
+
+      class UserFilter extends Filters {
+
+          protected $filters = ['search','user_id'];
+
+          public function search($value)
+          {
+              $this->builder->where("status", $value);
+          }
+          public function user_id($value)
+          {
+              $this->builder->where("id", $value);
+          }
+      }
+      
+      ```
       
  3. Create Repository Events
 
