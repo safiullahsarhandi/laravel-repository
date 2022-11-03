@@ -177,8 +177,92 @@ This package offers few commands which helps to perform different tasks or you c
       
       command: `php artisan make:repository-event <path/to/repository-event>`
       
-      eg: `php artisan make:repository-event User/UserRepositoryEvent` this will create event class in `app/Events/User/UserRepositoryEvent.php`
+      eg: `php artisan make:repository-event User/UserRepositoryEvent` will create event class in `app/Events/User/UserRepositoryEvent.php` with following code snippet in it by default.
       
+      ```
+      <?php
+      namespace App\Events\User;
+
+      use Illuminate\Database\Eloquent\Model;
+      use LaravelRepository\Contracts\EventContract;
+
+      class UserRepositoryEvent implements EventContract {
+
+          public function beforeCreate($repository,array $params = []){}
+
+          public function created(Model $model){}
+
+          public function beforeUpdate($repository,array $params = []){}
+
+          public function updated(Model $model){}
+
+          public function beforeDelete($repository,mixed $param){}
+
+          public function deleted(mixed $param){}
+
+          public function beforeFetch($repository,mixed $params = null){}
+
+          public function fetched(null|Model $value = null){}
+      }
+      
+      ```
+      
+      ### how to use event
+      
+      events might be called when you bind event class with any repository. you can see all repository methods below which triggers event `before` and `after` its execution. lets say here we want to create Order and storing its products in database how it would be possible you can create your own method and call here but we would recommend this; 
+      
+      ```
+      use App\Repositories\Order\OrderRepositoryContract;
+      use App\Events\Order\OrderRepositoryEvent;
+      
+      Route::post('/orders', function (OrderRepositoryContract $order) {
+          // params will be passed using \Illuminate\Support\Request;
+          // for now just take it as an example
+          $params = [
+              'customer_email' => 'customer@example.com',
+              'customer_name' => 'Mark Endrew',
+              'products' => [
+                  1 => ['qty' => 1, 'price' => 200 ],
+                  2 => ['qty' => 1, 'price' => 300 ],
+              ] 
+          ];  
+          $data = $order->event(OrderRepositoryEvent::class)->create($params);
+
+      });
+
+      
+      ```
+      
+      now we want to store `products` which are associated to `order` in our database. as we have called `create` method so that we can access `beforeCreate` or `created` in `App\Events\Order\OrderRepositoryEvent::class`.
+      
+      ```
+      <?php
+      namespace App\Events\Order;
+
+      use Illuminate\Database\Eloquent\Model;
+      use LaravelRepository\Contracts\EventContract;
+
+      class OrderRepositoryEvent implements EventContract {
+    
+          private $params;
+          public function beforeCreate($repository,array $params = [])
+          {
+
+              $this->params = $params;
+          }
+
+
+          public function created(Model $model)
+          {
+              // store products after order created 
+              $products = $this->params['products'];
+              // storing laravel belongsToMany order_products
+              $model->products()->attach($products);        
+
+          }
+      }
+      
+      ```
      
       
 
