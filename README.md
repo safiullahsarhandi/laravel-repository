@@ -8,7 +8,7 @@ using below mentioned command you can add this package in your laravel project
 
 # publish assets
 1. `php artisan vendor:publish --tag=repository-config`
-this command will create `repository.php` configuration file in `config` directory which will store information. 
+this command will create `repository.php` configuration file in `config` directory which will store information like this this. 
 
 
 ``` 
