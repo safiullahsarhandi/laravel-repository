@@ -1,12 +1,12 @@
 This Package is used to implement repository pattern in laravel with very minimal code. Idea behind this implementation is to allow modular approach and reusable every single entity in your project and enhance your coding experience with features like model binding, repository generator, repository events etc.  
 
 
-# Installation
+## Installation
 using below mentioned command you can add this package in your laravel project
 
 `composer require safiullahsarhandi/laravel-repository`
 
-# publish assets
+## publish assets
 1. `php artisan vendor:publish --tag=repository-config`
 this command will create `repository.php` configuration file in `config` directory which will store information like this this. 
 
@@ -20,25 +20,45 @@ return [
       * and bind Contract and model associated with it  
       *
       */
-      'repositories' => [
-            App\Repositories\User\UserRepository::class => [
-               'model' => App\Models\User::class,
-               'contract' => App\Repositories\User\UserRepositoryContract::class,
-            ]
-      ],
+      'repositories' => [],
   ];
 ?> 
 ```
 
-# Commands
+## Usage
 
 This package offers few commands which helps to perform different tasks or you can say that it's required to use this. 
 
 1. Create Repository
-
+      
       command: `php artisan make:repository <path/to/repository> <model>`
       
-      eg: `php artisan make:repository User/UserRepository User` this will create repository in app/Repositories/User/UserRepository.php
+      creating repository would be easy by using this package. it register your repository in config file.
+      and create set of files in app\Repositories directory, for instance `php artisan make:repository User/UserRepository User` will update your `app\Repositories` folder like this
+      
+      ![repository-dir](https://user-images.githubusercontent.com/36722999/199682649-8fa5718e-40c7-4371-ae6a-1d48931ec897.png)
+
+      and update your config file like this
+      
+      ```
+      <?php 
+            //config/repository.php
+            return [
+                  /* 
+                  * repositories will contain all the repositories namespaces from app/Repositories directory  
+                  * and bind Contract and model associated with it  
+                  *
+                  */
+                  'repositories' => [
+                        App\Repositories\User\UserRepository::class => [
+                           'model' => App\Models\User::class,
+                           'contract' => App\Repositories\User\UserRepositoryContract::class,
+                        ]
+                  ],
+              ];
+            ?> 
+      ```
+      
       
 2. Create Query Filter
 
