@@ -120,7 +120,7 @@ This package offers few commands which helps to perform different tasks or you c
       });
       
       ```
-      and your `UserFilter` should be like this  
+      and your `UserFilter::class` should be like this  
       ```
       <?php
       
@@ -142,6 +142,8 @@ This package offers few commands which helps to perform different tasks or you c
       }
       
       ```
+      
+      
       
  3. Create Repository Events
 
