@@ -1,6 +1,4 @@
-# safiullahsarhandi/laravel-repository
-This Package is used to implement repository pattern in laravel with very minimal code. Idea behind this implementation is to allow modular approach and reusable every single entity in your project 
-i have made this package to enhance your coding experience with dynamic model binding in repository.  
+This Package is used to implement repository pattern in laravel with very minimal code. Idea behind this implementation is to allow modular approach and reusable every single entity in your project and enhance your coding experience with features like model binding, repository generator, repository events etc.  
 
 
 # Installation
@@ -10,7 +8,7 @@ using below mentioned command you can add this package in your laravel project
 
 # publish assets
 1. `php artisan vendor:publish --tag=repository-config`
-this command will create `repository.php` configuration file in `config` directory with following snippet in it. 
+this command will create `repository.php` configuration file in `config` directory which will store information. 
 
 
 ``` 
@@ -18,10 +16,16 @@ this command will create `repository.php` configuration file in `config` directo
 //config/repository.php
 return [
       /* 
-      * repositories will contain all the repositories namespaces from app/Repositories directory  and bind Contract and model for it  
-      * this allows you not to set model explicitly on every use.  
+      * repositories will contain all the repositories namespaces from app/Repositories directory  
+      * and bind Contract and model associated with it  
+      *
       */
-      'repositories' => [],
+      'repositories' => [
+            App\Repositories\User\UserRepository::class => [
+               'model' => App\Models\User::class,
+               'contract' => App\Repositories\User\UserRepositoryContract::class,
+            ]
+      ],
   ];
 ?> 
 ```
