@@ -29,7 +29,10 @@ return [
 
 This package offers few commands which helps to perform different tasks or you can say that it's required to use this. 
 
-1. Create Repository
+1. How to Create Repository
+
+
+
       
       command: `php artisan make:repository <path/to/repository> <model>`
       
