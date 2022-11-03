@@ -42,31 +42,56 @@ This package offers few commands which helps to perform different tasks or you c
       
       ```
       <?php 
-            //config/repository.php
-            return [
-                  /* 
-                  * repositories will contain all the repositories namespaces from app/Repositories directory  
-                  * and bind Contract and model associated with it  
-                  *
-                  */
-                  'repositories' => [
-                        App\Repositories\User\UserRepository::class => [
-                           'model' => App\Models\User::class,
-                           'contract' => App\Repositories\User\UserRepositoryContract::class,
-                        ]
-                  ],
-              ];
-            ?> 
+      //config/repository.php
+      return [
+            /* 
+            * repositories will contain all the repositories namespaces from app/Repositories directory  
+            * and bind Contract and model associated with it  
+            *
+            */
+            'repositories' => [
+                  App\Repositories\User\UserRepository::class => [
+                     'model' => App\Models\User::class,
+                     'contract' => App\Repositories\User\UserRepositoryContract::class,
+                  ]
+            ],
+        ];
+      ?> 
       ```
       
       
 2. Create Query Filter
 
-      idea behind filter is to extend database query. When calling any specific repository, every repository function which you will see below has some how similar structure and contain minimum amount of code. i will explain implementation for filters in next section of documentation so that you will get familier with it but for now you can generate your filter with given command.
+      idea behind filter is to extend database query. When calling any specific repository, every repository function which you will see below has some how similar structure and contain minimum amount of code. i will explain implementation for filters in next section of documentation so that you will get familier with it but for now let's check how to generate query filters with given command.
       
       command: `php artisan make:filter <path/to/filter>`
       
-      eg: `php artisan make:filter Api/User/UserFilter` this will generate filter in app/Filters/Api/User/UserFilters.php
+      eg: `php artisan make:filter Api/UserFilter` this will generate filter in `app/Filters/Api/UserFilters.php`
+      
+      ![filter-dir](https://user-images.githubusercontent.com/36722999/199750595-0a7a8b04-d830-4584-893c-7ee6c3f9d763.png)
+      
+      
+      this will be final output for `make:filter` command. 
+      ```
+      <?php
+      
+      namespace App\Filters\Api;
+      use LaravelRepository\Abstracts\Filters;
+
+      class UserFilter extends Filters {
+
+          protected $filters = ['search'];
+
+          public function search($value)
+          {
+              $this->builder->where("status", $value);
+          }
+      }
+      ```
+      
+      filter class should have methods with same name which you haved registered in `protected $filters` property. whenever you bind query filter with repository it reads laravel `Illuminate\Support\Request` instance and verify the availablity of parameters in http request. you can use it this way
+      
+      
       
  3. Create Repository Events
 
