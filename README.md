@@ -91,6 +91,21 @@ This package offers few commands which helps to perform different tasks or you c
       
       filter class should have methods with same name which you haved registered in `protected $filters` property. whenever you bind query filter with repository it reads laravel `Illuminate\Support\Request` instance and verify the availablity of parameters in http request. you can use it this way
       
+      ```
+      use App\Filters\Api\UserFilter;
+      use App\Repositories\User\UserRepositoryContract;
+      use Illuminate\Support\Facades\Route;
+      
+      
+      //URL looks like "http://localhost:8000/users?search=active" will give you better understanding for filters   
+      
+      Route::get('/users', function (UserRepositoryContract $user,UserFilter $filter) {
+          $data = $user->findAll($filter);
+          // under the hood its work like this
+         // User::where(status,'active')->get();
+      });
+
+      ```
       
       
  3. Create Repository Events
