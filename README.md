@@ -209,7 +209,7 @@ This package offers few commands which helps to perform different tasks or you c
       
       ### how to use event
       
-      events might be called when you bind event class with any repository. you can see all repository methods below which triggers event `before` and `after` its execution. lets say here we want to create Order and storing its products in database how it would be possible you can create your own method and call here but we would recommend this; 
+      repository events are called when you bind `event class` with any `repository`. you can see all repository methods listed below. lets say we want to create `Order and store products in database which user has selected. how it would be possible? you can create your own method and call it but we would recommend events; 
       
       ```
       use App\Repositories\Order\OrderRepositoryContract;
@@ -233,7 +233,7 @@ This package offers few commands which helps to perform different tasks or you c
       
       ```
       
-      now we want to store `products` which are associated to `order` in our database. as we have called `create` method so that we can access `beforeCreate` or `created` in `App\Events\Order\OrderRepositoryEvent::class`.
+      now we want to store `products` in our database which are associated to an `order`. as we have called `create` method so we can put some logics in `beforeCreate` or `created` in `App\Events\Order\OrderRepositoryEvent::class`.
       
       ```
       <?php
@@ -245,9 +245,11 @@ This package offers few commands which helps to perform different tasks or you c
       class OrderRepositoryEvent implements EventContract {
     
           private $params;
+          
           public function beforeCreate($repository,array $params = [])
           {
-
+               //you don't need to do this every time 
+              // and we don't have another way to access params in created
               $this->params = $params;
           }
 
@@ -257,12 +259,15 @@ This package offers few commands which helps to perform different tasks or you c
               // store products after order created 
               $products = $this->params['products'];
               // storing laravel belongsToMany order_products
-              $model->products()->attach($products);        
-
+              $model->products()->attach($products);      
+              
+              // process merchant payment  
+              $model->pay();
+                
           }
       }
       
       ```
      
-      
-
+      |    SR No.    |       Method Name       | Events | 
+      | :---------:  |  :--------------------: | :----: |
