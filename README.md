@@ -265,9 +265,25 @@ This package offers few commands which helps to perform different tasks or you c
               $model->pay();
                 
           }
-      }
+      } 
       
       ```
      
-      |    SR No.    |       Method Name       | Events | 
-      | :---------:  |  :--------------------: | :----: |
+     ### Repository Methods: 
+     
+      | # SR No. | Method Name | access modifier | Events | Description | 
+      | :-----:  | :--------:  | :-------------: | :----: | :---------: |
+      | 01  | `setModel(Model $model)` | public | N/A |   sets or bind model with repository. by default model is injected but sometimes you need to set Model implicitly. so that it can work in such scenario. |  
+      | 02 | `withCount(array $relations = [])` | public | N/A | you can pass laravel relations using this method to perform aggregation. |
+      | 03 | `with(array $relations = [])` | public | N/A | you can pass laravel relations using this method to perform eager loading. |
+      | 04 | `findAll(Filters\|null $filter = null)` | public | `beforeFetch`, `fetched` | fetches all records of injected model and can take Filter instance as parameter |
+      | 05 | `findById(int $id, Filters\|null $filter = null)` | public | `beforeFetch`, `fetched` | fetches specific record of injected model |
+      | 06 | `findOne(Filters\|null $filter = null)` | public | `beforeFetch`, `fetched` | used to fetch first user of injected model |
+      | 07 | `paginate(int $perPage = 10, Filters\|null $filter = null)` | public | `beforeFetch`, `fetched` | fetches all records and returns as paginated |
+      | 08 | `create(array $params)` | public | `beforeCreate`, `created` | create new record in model. take parameters set all columns which are fillable |
+      | 09 | `update(int $id, array $params, Filters\|null $filter = null)` | public | `beforeUpdate`, `updated` | update record in model |
+      | 10 | `delete(int $id, Filters\|null $filter = null)` | public | `beforeDelete`, `deleted` | delete record in model matched to id  |
+      | 11 | `getTotal(Filters\|null $filter = null)` | public | `beforeFetch` | returns total no of records in model | 
+      | 12 | `notification()` | public | N/A | returns `LaravelRepository\Repositories\NotificationRepository::class` instance |.
+      | 13 | `event(string $eventNamespace)` | public | N/A | bind event class with any repository.   
+
