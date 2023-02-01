@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Storage;
 
 trait Fileable
 {
-    private function imagesNames(){
-        return $this->images?? $images = [
+    private function fileNames(){
+        return $this->files?? $images = [
             'file' => 'single',
             'files' => 'multiple',
         ];
@@ -74,7 +74,7 @@ trait Fileable
     }
     
     private function isRemovable($keyName){
-        $images = $this->imagesNames();
+        $images = $this->fileNames();
         return \Arr::exists($images,$keyName) && $images[$keyName] == 'single';
     }
     
