@@ -2,15 +2,13 @@
 
 namespace LaravelRepository\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+use LaravelRepository\Abstracts\FiltersAbstract;
 
 trait UseFilter
 {
-    public function scopeFilter($query, $filters)
+    public function scopeFilter(Builder $builder, FiltersAbstract $filter, array $filters = []): Builder
     {
-        if ($filters) {
-
-            return $filters->apply($query);
-        }
-        return $query;
+        return $filter->add($filters)->filter($builder);
     }
 }
