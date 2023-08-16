@@ -1,0 +1,9 @@
+<?php
+
+namespace {{ namespace }};
+use LaravelRepository\Abstracts\FiltersAbstract;
+
+class {{ class }} extends FiltersAbstract {
+
+    protected array $filters = [];
+}

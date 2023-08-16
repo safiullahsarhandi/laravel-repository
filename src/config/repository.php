@@ -1,9 +1,5 @@
-<?php 
+<?php
 return [
-    
-    'repositories' => [
 
-    ],
+    'repositories' => [],
 ];
-
-?>

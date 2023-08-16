@@ -2,9 +2,9 @@
 
 namespace LaravelRepository\Traits;
 
-trait Filterable
-{
 
+trait UseFilter
+{
     public function scopeFilter($query, $filters)
     {
         if ($filters) {

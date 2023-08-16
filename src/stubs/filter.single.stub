@@ -1,0 +1,12 @@
+<?php
+
+namespace {{ namespace }};
+use LaravelRepository\Abstracts\FilterAbstract;
+use Illuminate\Database\Eloquent\Builder;
+
+class {{ class }} extends FilterAbstract {
+
+    public function filter(Builder $builder, $value): Builder
+    {
+    }
+}

@@ -13,141 +13,162 @@ abstract class BaseRepository implements BaseRepositoryContract
 {
     protected $model;
     private $countRelations = [];
-    
+
     private $relations = [];
     /*
-    * can save event instance   
+    * can save event instance
      */
     private EventContract $event;
 
     public function __construct()
     {
-        $repositories = config('repository.repositories')??[];
+        $repositories = config('repository.repositories') ?? [];
         $current = get_class($this);
         $this->model = resolve($repositories[$current]['model']);
     }
 
-    public final function setModel(Model $model)
+    final public function setModel(Model $model)
     {
 
         $this->model = $model;
         return $this;
     }
-    /* 
+    /*
     * Set Count Relation for eloquent ORM
     */
-    public final function withCount(array $relations = [])
+    final public function withCount(array $relations = [])
     {
         $this->countRelations = $relations;
         return $this;
     }
-    /* 
+    /*
     * Set Relation (eager loading) for eloquent ORM
     */
-    
-    public final function with(array $relations = [])
+
+    final public function with(array $relations = [])
     {
         $this->relations = $relations;
         return $this;
     }
 
-    public final function findAll(Filters|null $filter = null)
+    final public function findAll(Filters|FiltersAbstract|null $filter = null)
     {
         try {
             $this->callEvent('beforeFetch');
-            $model = $this->model->withCount($this->countRelations)->with($this->relations)->filter($filter)->get();
-            return $this->callEvent('fetched',$model);
+            $model = $this->model
+                ->withCount($this->countRelations)
+                ->with($this->relations)
+                ->when(
+                    !empty($filter),
+                    fn ($builder) => $builder->filter($filter)
+                )->get();
+            return $this->callEvent('fetched', $model);
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public final function findById(mixed $id, Filters|null $filter = null)
+    final public function findById(mixed $id, Filters|FiltersAbstract|null $filter = null)
     {
         try {
             $this->callEvent('beforeFetch');
-            $model = $this->model->withCount($this->countRelations)->with($this->relations)->filter($filter)->findOrFail($id);
-            return $this->callEvent('fetched',$model);
+            $model = $this->model
+                ->withCount($this->countRelations)
+                ->with($this->relations)
+                ->when(
+                    !empty($filter),
+                    fn ($builder) => $builder->filter($filter)
+                )
+                ->findOrFail($id);
+            return $this->callEvent('fetched', $model);
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public final function findOne(Filters|null $filter = null)
+    final public function findOne(Filters|FiltersAbstract|null $filter = null)
     {
         try {
             $this->callEvent('beforeFetch');
-            $model = $this->model->withCount($this->countRelations)->with($this->relations)->filter($filter)->first();
-            return $this->callEvent('fetched',$model);
+            $model = $this->model
+                ->withCount($this->countRelations)
+                ->with($this->relations)
+                ->when(
+                    !empty($filter),
+                    fn ($builder) => $builder->filter($filter)
+                )->first();
+            return $this->callEvent('fetched', $model);
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public final function paginate(int $perPage = 10, Filters|null $filter = null)
+    final public function paginate(int $perPage = 10, Filters|FiltersAbstract|null $filter = null)
     {
         try {
             $this->callEvent('beforeFetch');
-            $model = $this->model->withCount($this->countRelations)->with($this->relations)->filter($filter)->paginate($perPage);
-            return $this->callEvent('fetched',$model);
+            $model = $this->model
+                ->withCount($this->countRelations)
+                ->with($this->relations)
+                ->when(
+                    !empty($filter),
+                    fn ($builder) => $builder->filter($filter)
+                )->paginate($perPage);
+            return $this->callEvent('fetched', $model);
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public final function create(array $params)
+    final public function create(array $params)
     {
-        
-        
+
+
         try {
-            $params = $this->callEvent('beforeCreate',$params);
+            $params = $this->callEvent('beforeCreate', $params);
             $model = $this->model->create($params);
-            return $this->callEvent('created',$model);
-
+            return $this->callEvent('created', $model);
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public final function update(int $id, array $params, Filters|null $filter = null)
+    final public function update(int $id, array $params, Filters|FiltersAbstract|null $filter = null)
     {
         try {
-            $params = $this->callEvent('beforeUpdate',$params);
+            $params = $this->callEvent('beforeUpdate', $params);
             $model = $this->findById($id, filter: $filter);
             $model->update($params);
-            return $this->callEvent('updated',$model);
-            
+            return $this->callEvent('updated', $model);
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public final function delete(mixed $id, Filters|null $filter = null)
+    final public function delete(mixed $id, Filters|FiltersAbstract|null $filter = null)
     {
         try {
-            $this->callEvent('beforeDelete',$id);
+            $this->callEvent('beforeDelete', $id);
             $model = $this->findById($id, filter: $filter);
             $model->delete();
-            return $this->callEvent('deleted',$id);
-            
+            return $this->callEvent('deleted', $id);
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
 
-    public final function getTotal(Filters|null $filter = null)
+    final public function getTotal(Filters|FiltersAbstract|null $filter = null)
     {
         try {
-            $params = $this->callEvent('beforeFetch',$filter);
+            $params = $this->callEvent('beforeFetch', $filter);
             return $this->model->filter($filter)->count();
-            
         } catch (\Throwable $th) {
             throw $th;
         }
     }
 
-    public final function notification(): NotificationRepository
+    final public function notification(): NotificationRepository
     {
         return (new NotificationRepository());
     }
@@ -155,28 +176,29 @@ abstract class BaseRepository implements BaseRepositoryContract
     *  sets event instance of repositoryEvent 
     *
     */
-    public final function event(string $eventNamespace): BaseRepository
-    {        
+    final public function event(string $eventNamespace): BaseRepository
+    {
         $this->event = resolve($eventNamespace);
         return $this;
     }
 
-    private function callEvent(string $eventName,mixed $params = []){
-        
+    private function callEvent(string $eventName, mixed $params = [])
+    {
+
         try {
-            if($this->event){
-                if(str_contains($eventName,'before')){
-                    $data = $this->event->{$eventName}($this,$params);
-                    if(is_array($params)){
-                        return array_merge($params,$data);
-                    }else{
+            if ($this->event) {
+                if (str_contains($eventName, 'before')) {
+                    $data = $this->event->{$eventName}($this, $params);
+                    if (is_array($params)) {
+                        return array_merge($params, $data);
+                    } else {
                         return $params;
                     }
                 }
                 // if returned something from created then returned values will be event returned values;
                 // otherwise we just return params; 
                 $returnedValues = $this->event->{$eventName}($params);
-                return $returnedValues?$returnedValues:$params;
+                return $returnedValues ? $returnedValues : $params;
             }
         } catch (\Throwable $th) {
             // if event is not initialized it will return the params; 
