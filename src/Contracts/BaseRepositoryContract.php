@@ -30,6 +30,8 @@ interface BaseRepositoryContract
 
     public function delete(int $id, Filters|FiltersAbstract|null $filter = null);
 
+    public function select(mixed $selectValue);
+
     public function getTotal(Filters|FiltersAbstract|null $filter = null);
 
     /*

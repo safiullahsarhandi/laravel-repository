@@ -15,6 +15,8 @@ abstract class BaseRepository implements BaseRepositoryContract
     private $countRelations = [];
 
     private $relations = [];
+
+    private mixed $selects = ['*'];
     /*
     * can save event instance
      */
@@ -73,6 +75,7 @@ abstract class BaseRepository implements BaseRepositoryContract
         try {
             $this->callEvent('beforeFetch');
             $model = $this->model
+                ->select($this->selects)
                 ->withCount($this->countRelations)
                 ->with($this->relations)
                 ->when(
@@ -91,6 +94,7 @@ abstract class BaseRepository implements BaseRepositoryContract
         try {
             $this->callEvent('beforeFetch');
             $model = $this->model
+                ->select($this->selects)
                 ->withCount($this->countRelations)
                 ->with($this->relations)
                 ->when(
@@ -108,6 +112,7 @@ abstract class BaseRepository implements BaseRepositoryContract
         try {
             $this->callEvent('beforeFetch');
             $model = $this->model
+                ->select($this->selects)
                 ->withCount($this->countRelations)
                 ->with($this->relations)
                 ->when(
@@ -196,13 +201,19 @@ abstract class BaseRepository implements BaseRepositoryContract
                     }
                 }
                 // if returned something from created then returned values will be event returned values;
-                // otherwise we just return params; 
+                // otherwise we just return params;
                 $returnedValues = $this->event->{$eventName}($params);
                 return $returnedValues ? $returnedValues : $params;
             }
         } catch (\Throwable $th) {
-            // if event is not initialized it will return the params; 
+            // if event is not initialized it will return the params;
             return $params;
         }
+    }
+
+    public function select(mixed $selectValue)
+    {
+        $this->selects = $selectValue;
+        return $this;
     }
 }
