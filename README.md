@@ -6,6 +6,8 @@ using below mentioned command you can add this package in your laravel project
 
 `composer require safiullahsarhandi/laravel-repository`
 
+after installing this package you need to register provider `LaravelRepository\Providers\RepositoryServiceProvider::class,` in your project's `config/app.php` 
+
 ## publish assets
 1. `php artisan vendor:publish --tag=repository-config`
 this command will create `repository.php` configuration file in `config` directory which will store information like this this. 
@@ -91,6 +93,7 @@ This package offers few commands which helps to perform different tasks or you c
           }
       }
       ```
+       
       ### Make Model Filterable
       before going through that how to use `UserFilter::class` with any repository, we should know that what basic steps to be followed before binding filter with repository. we have to use `LaravelRepository\Traits\Filterable` in model to make any model filtered on demand.
       

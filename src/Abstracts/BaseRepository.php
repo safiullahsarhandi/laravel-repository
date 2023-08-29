@@ -55,122 +55,90 @@ abstract class BaseRepository implements BaseRepositoryContract
 
     final public function findAll(Filters|FiltersAbstract|null $filter = null)
     {
-        try {
-            $this->callEvent('beforeFetch');
-            $model = $this->model
-                ->withCount($this->countRelations)
-                ->with($this->relations)
-                ->when(
-                    !empty($filter),
-                    fn ($builder) => $builder->filter($filter)
-                )->get();
-            return $this->callEvent('fetched', $model);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $this->callEvent('beforeFetch');
+        $model = $this->model
+            ->withCount($this->countRelations)
+            ->with($this->relations)
+            ->when(
+                !empty($filter),
+                fn ($builder) => $builder->filter($filter)
+            )->get();
+        return $this->callEvent('fetched', $model);
     }
 
     final public function findById(mixed $id, Filters|FiltersAbstract|null $filter = null)
     {
-        try {
-            $this->callEvent('beforeFetch');
-            $model = $this->model
-                ->select($this->selects)
-                ->withCount($this->countRelations)
-                ->with($this->relations)
-                ->when(
-                    !empty($filter),
-                    fn ($builder) => $builder->filter($filter)
-                )
-                ->findOrFail($id);
-            return $this->callEvent('fetched', $model);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $this->callEvent('beforeFetch');
+        $model = $this->model
+            ->select($this->selects)
+            ->withCount($this->countRelations)
+            ->with($this->relations)
+            ->when(
+                !empty($filter),
+                fn ($builder) => $builder->filter($filter)
+            )
+            ->findOrFail($id);
+        return $this->callEvent('fetched', $model);
     }
 
     final public function findOne(Filters|FiltersAbstract|null $filter = null)
     {
-        try {
-            $this->callEvent('beforeFetch');
-            $model = $this->model
-                ->select($this->selects)
-                ->withCount($this->countRelations)
-                ->with($this->relations)
-                ->when(
-                    !empty($filter),
-                    fn ($builder) => $builder->filter($filter)
-                )->first();
-            return $this->callEvent('fetched', $model);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $this->callEvent('beforeFetch');
+        $model = $this->model
+            ->select($this->selects)
+            ->withCount($this->countRelations)
+            ->with($this->relations)
+            ->when(
+                !empty($filter),
+                fn ($builder) => $builder->filter($filter)
+            )->first();
+        return $this->callEvent('fetched', $model);
     }
 
     final public function paginate(int $perPage = 10, Filters|FiltersAbstract|null $filter = null)
     {
-        try {
-            $this->callEvent('beforeFetch');
-            $model = $this->model
-                ->select($this->selects)
-                ->withCount($this->countRelations)
-                ->with($this->relations)
-                ->when(
-                    !empty($filter),
-                    fn ($builder) => $builder->filter($filter)
-                )->paginate($perPage);
-            return $this->callEvent('fetched', $model);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $this->callEvent('beforeFetch');
+        $model = $this->model
+            ->select($this->selects)
+            ->withCount($this->countRelations)
+            ->with($this->relations)
+            ->when(
+                !empty($filter),
+                fn ($builder) => $builder->filter($filter)
+            )->paginate($perPage);
+        return $this->callEvent('fetched', $model);
     }
 
     final public function create(array $params)
     {
 
 
-        try {
-            $params = $this->callEvent('beforeCreate', $params);
-            $model = $this->model->create($params);
-            return $this->callEvent('created', $model);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $params = $this->callEvent('beforeCreate', $params);
+        $model = $this->model->create($params);
+        return $this->callEvent('created', $model);
     }
 
     final public function update(int $id, array $params, Filters|FiltersAbstract|null $filter = null)
     {
-        try {
-            $params = $this->callEvent('beforeUpdate', $params);
-            $model = $this->findById($id, filter: $filter);
-            $model->update($params);
-            return $this->callEvent('updated', $model);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $params = $this->callEvent('beforeUpdate', $params);
+        $model = $this->findById($id, filter: $filter);
+        $model->update($params);
+        return $this->callEvent('updated', $model);
     }
 
     final public function delete(mixed $id, Filters|FiltersAbstract|null $filter = null)
     {
-        try {
-            $this->callEvent('beforeDelete', $id);
-            $model = $this->findById($id, filter: $filter);
-            $model->delete();
-            return $this->callEvent('deleted', $id);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $this->callEvent('beforeDelete', $id);
+        $model = $this->findById($id, filter: $filter);
+        $model->delete();
+        return $this->callEvent('deleted', $id);
     }
 
 
     final public function getTotal(Filters|FiltersAbstract|null $filter = null)
     {
-        try {
-            $params = $this->callEvent('beforeFetch', $filter);
-            return $this->model->filter($filter)->count();
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $this->callEvent('beforeFetch', $filter);
+        return $this->model->filter($filter)->count();
     }
 
     final public function notification(): NotificationRepository

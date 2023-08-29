@@ -88,6 +88,6 @@ abstract class FiltersAbstract
      */
     protected function resolveFilter(string $filter)
     {
-        return new $this->filters[$filter];
+        return new $this->filters[$filter]($this->request);
     }
 }

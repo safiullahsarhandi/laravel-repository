@@ -3,10 +3,19 @@
 namespace LaravelRepository\Abstracts;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 abstract class FilterAbstract
 {
+
+    protected Request $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     /**
      * Apply filter.
      *
